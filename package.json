@@ -1,6 +1,6 @@
 {
   "name": "redis-event-queue",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Interprocess queue based on Redis that implements EventEmitter interface",
   "main": "index.js",
   "scripts": {
