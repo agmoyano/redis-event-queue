@@ -15,6 +15,9 @@ module.exports = function(ops) {
     var queueType = evtQueue.pop();
     event = evtQueue.join(':');
     if(events[queueType] && events[queueType][event]) {
+      try {
+        message = JSON.parse(message);
+      }catch(e) {}
       def[queueType].__process(queueType, event, message)
     }
   });
@@ -32,6 +35,11 @@ module.exports = function(ops) {
         var args = Array.prototype.slice.call(arguments);
         var event = args.shift();
         if(!event) return;
+        if(args.length && args.length > 1) {
+          try {
+            args = JSON.stringify(args);
+          }catch(e) {}
+        }
         publishFn(queueType, event, args);
       },
       __process: processMessageFn
@@ -50,14 +58,17 @@ module.exports = function(ops) {
           });
       },
       function(queueType, event, message) {
-        pub.rpop(prefix+event+':'+queueType, function(err, args) {
-          if(!err && args) {
+        pub.rpop(prefix+event+':'+queueType, function(err, message) {
+          if(!err && message) {
+            try {
+              message = JSON.parse(message);
+            }catch(e) {}
             events[queueType][event].forEach(function(listener) {
               process.nextTick(function() {
-                if(args instanceof Array) {
-                  listener.fn.apply(listener.bind, args);
+                if(message instanceof Array) {
+                  listener.fn.apply(listener.bind, message);
                 } else {
-                  listener.fn.call(listener.bind, args);
+                  listener.fn.call(listener.bind, message);
                 }
               });
             });
