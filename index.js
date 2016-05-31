@@ -92,8 +92,7 @@ module.exports = function(ops) {
           sub.unsubscribe(event+':'+queueType);
         }
       },
-      __process: processMessageFn,
-      removeListener
+      __process: processMessageFn
     };
     def.addListener = def.on;
     return def;
