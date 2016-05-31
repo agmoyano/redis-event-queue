@@ -1,0 +1,29 @@
+{
+  "name": "redis-event-queue",
+  "version": "1.0.0",
+  "description": "Safe queue based on Redis and implementing EventEmitter interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agmoyano/redis-event-queue.git"
+  },
+  "keywords": [
+    "redis",
+    "queue",
+    "work",
+    "workqueue"
+  ],
+  "author": "Agustin Moyano",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/agmoyano/redis-event-queue/issues"
+  },
+  "homepage": "https://github.com/agmoyano/redis-event-queue#readme",
+  "dependencies": {
+    "hiredis": "^0.4.1",
+    "redis": "^2.6.0-2"
+  }
+}
