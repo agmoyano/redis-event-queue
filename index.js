@@ -29,7 +29,7 @@ module.exports = function(ops) {
           events[queueType][event]=[];
           sub.subscribe(event+':'+queueType);
         }
-        events[queueType][event].push({bind: bind||this, fn: fn});
+        events[queueType][event].push({bind: this, fn: fn});
       },
       emit: function() {
         var args = Array.prototype.slice.call(arguments);
@@ -57,7 +57,7 @@ module.exports = function(ops) {
           events[queueType][event]=[];
           sub.subscribe(event+':'+queueType);
         }
-        events[queueType][event].push({bind: bind||this, fn: fn, once: true});
+        events[queueType][event].push({bind: this, fn: fn, once: true});
       },
       prependListener: function(event, fn) {
         if(!events[queueType]) events[queueType]={};
@@ -65,7 +65,7 @@ module.exports = function(ops) {
           events[queueType][event]=[];
           sub.subscribe(event+':'+queueType);
         }
-        events[queueType][event].unshift({bind: bind||this, fn: fn});
+        events[queueType][event].unshift({bind: this, fn: fn});
       },
       prependOnceListener: function(event, fn) {
         if(!events[queueType]) events[queueType]={};
@@ -73,7 +73,7 @@ module.exports = function(ops) {
           events[queueType][event]=[];
           sub.subscribe(event+':'+queueType);
         }
-        events[queueType][event].unshift({bind: bind||this, fn: fn, once: true});
+        events[queueType][event].unshift({bind: this, fn: fn, once: true});
       },
       removeAllListeners: function(event) {
         delete events[queueType][event];

@@ -1,4 +1,4 @@
-var req = require('./index')();
+var req = new require('./index')();
 var wqueue = req.workqueue;
 var bqueue = req.broadcast;
 wqueue.on('event', function(msg, other) {
