@@ -115,13 +115,18 @@ module.exports = function(ops) {
             try {
               message = JSON.parse(message);
             }catch(e) {}
-            events[queueType][event].forEach(function(listener) {
+            var once = [];
+            events[queueType][event].forEach(function(listener, i) {
+              if(listener.once) once.unshift(i);
               process.nextTick(function() {
                 if(message instanceof Array) {
                   listener.fn.apply(listener.bind, message);
                 } else {
                   listener.fn.call(listener.bind, message);
                 }
+              });
+              once.forEach(function(pos) {
+                events[queueType][event].splice(i, 1);
               });
             });
           }
@@ -136,12 +141,16 @@ module.exports = function(ops) {
       },
       function(queueType, event, message) {
         events[queueType][event].forEach(function(listener) {
+          if(listener.once) once.unshift(i);
           process.nextTick(function() {
             if(message instanceof Array) {
               listener.fn.apply(listener.bind, message);
             } else {
               listener.fn.call(listener.bind, message);
             }
+          });
+          once.forEach(function(pos) {
+            events[queueType][event].splice(i, 1);
           });
         });
       })
