@@ -22,8 +22,8 @@ module.exports = function(ops) {
     }
   });
   var mkQueue = function(queueType, publishFn, processMessageFn) {
-    return {
-      on: function(event, fn, bind) {
+    var def = {
+      on: function(event, fn) {
         if(!events[queueType]) events[queueType]={};
         if(!events[queueType][event]) {
           events[queueType][event]=[];
@@ -42,8 +42,61 @@ module.exports = function(ops) {
         }
         publishFn(queueType, event, args);
       },
-      __process: processMessageFn
-    }
+      eventNames: function() {
+        return Object.keys(events[queueType]);
+      },
+      listenerCount: function(event) {
+        return events[queueType][event]?events[queueType][event].length:0;
+      },
+      listeners: function(event) {
+        return events[queueType][event];
+      },
+      once: function(event, fn) {
+        if(!events[queueType]) events[queueType]={};
+        if(!events[queueType][event]) {
+          events[queueType][event]=[];
+          sub.subscribe(event+':'+queueType);
+        }
+        events[queueType][event].push({bind: bind||this, fn: fn, once: true});
+      },
+      prependListener: function(event, fn) {
+        if(!events[queueType]) events[queueType]={};
+        if(!events[queueType][event]) {
+          events[queueType][event]=[];
+          sub.subscribe(event+':'+queueType);
+        }
+        events[queueType][event].unshift({bind: bind||this, fn: fn});
+      },
+      prependOnceListener: function(event, fn) {
+        if(!events[queueType]) events[queueType]={};
+        if(!events[queueType][event]) {
+          events[queueType][event]=[];
+          sub.subscribe(event+':'+queueType);
+        }
+        events[queueType][event].unshift({bind: bind||this, fn: fn, once: true});
+      },
+      removeAllListeners: function(event) {
+        delete events[queueType][event];
+        sub.unsubscribe(event+':'+queueType);
+      },
+      removeListener: function(event, listener) {
+        if(!events[queueType][event]) return;
+        for(var i =0; i < events[queueType][event].length; i++) {
+          if(events[queueType][event][i].fn == listener) {
+            events[queueType][event].splice(i,1);
+            break;
+          }
+        }
+        if(!events[queueType][event].length) {
+          delete events[queueType][event];
+          sub.unsubscribe(event+':'+queueType);
+        }
+      },
+      __process: processMessageFn,
+      removeListener
+    };
+    def.addListener = def.on;
+    return def;
   }
   var def = {
     workqueue: mkQueue(

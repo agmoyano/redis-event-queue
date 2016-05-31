@@ -10,7 +10,7 @@ npm install --save redis-event-queue
 
 # Usage
 
-**Emmiter**
+## Emmiter
 
 ```javascript
 var req = require('redis-event-queue')(options);
@@ -24,7 +24,7 @@ for(var i = 0; i < 10; i++) {
 }
 ```
 
-**Listener**
+## Listener
 
 ```javascript
 var req = require('redis-event-queue')(options);
