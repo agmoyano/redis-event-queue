@@ -41,6 +41,12 @@ bqueue.on('event', function(msg) {
 });
 ```
 
+## options
+
+* prefix: Set keys prefix to use in redis.
+
+All other options are the same as described in [redis](https://www.npmjs.com/package/redis).
+
 ## workqueue
 
 Delivers a message to the first process available

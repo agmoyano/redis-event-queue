@@ -1,7 +1,7 @@
 {
   "name": "redis-event-queue",
   "version": "1.0.0",
-  "description": "Safe queue based on Redis and implementing EventEmitter interface",
+  "description": "Interprocess queue based on Redis that implements EventEmitter interface",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
