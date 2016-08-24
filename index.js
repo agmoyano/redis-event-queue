@@ -35,7 +35,7 @@ module.exports = function(ops) {
         var args = Array.prototype.slice.call(arguments);
         var event = args.shift();
         if(!event) return;
-        if(args.length && args.length > 1) {
+        if(args.length) {
           try {
             args = JSON.stringify(args);
           }catch(e) {}
