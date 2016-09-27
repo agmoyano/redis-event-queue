@@ -140,6 +140,7 @@ module.exports = function(ops) {
         });
       },
       function(queueType, event, message) {
+        var once = [];
         events[queueType][event].forEach(function(listener) {
           if(listener.once) once.unshift(i);
           process.nextTick(function() {
